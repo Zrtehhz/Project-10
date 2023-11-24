@@ -1,8 +1,8 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Form from "./index";
 
-describe("When Form is created", () => {
-  it("a list of fields card is displayed", async () => {
+describe("When Events is created", () => {
+  it("a list of event card is displayed", async () => {
     render(<Form />);
     await screen.findByText("Email");
     await screen.findByText("Nom");
@@ -12,18 +12,22 @@ describe("When Form is created", () => {
 
   describe("and a click is triggered on the submit button", () => {
     it("the success action is called", async () => {
-      const onSuccess = jest.fn();
-      render(<Form onSuccess={onSuccess} />);
+      const mockSuccessAction = jest.fn(); // simuler une fonction d'action de réussite
 
-      const sendButton = screen.getByText("Envoyer"); // Utilise getByText ici
-      fireEvent.click(sendButton);
-
-      await screen.findByText("En cours"); // Vérifie que le texte passe à "En cours"
-
-      // Utilisez waitFor pour attendre que le bouton affiche à nouveau "Envoyer"
-      await waitFor(() => expect(screen.getByText("Envoyer")).toBeInTheDocument());
-
-      expect(onSuccess).toHaveBeenCalled();
+      const { findByText } = render(<Form onSuccess={mockSuccessAction} />);
+      fireEvent.click(screen.getByTestId('button-test-id'));
+      
+      // Attendre que le bouton affiche "En cours"
+      await findByText("En cours");
+      
+      // Ajouter un délai pour simuler l'action asynchrone
+      await new Promise(resolve => setTimeout(resolve, 1000));
+  
+      // Attendre que le texte du bouton revienne à "Envoyer" après la fin de l'action asynchrone
+      await findByText("Envoyer");
+      
+// S'assurer que la fonction d'action de réussite a été appelée
+      expect(mockSuccessAction).toHaveBeenCalled();
     });
   });
 });
