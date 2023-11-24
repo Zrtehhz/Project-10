@@ -3,7 +3,7 @@ import Select from "./index";
 
 describe("When a select is created", () => {
   it("a list of choices is displayed", () => {
-    render(<Select selection={["value1", "value2"]} />);
+    render(<Select selection={["value1", "value2"]} onChange={onChange} />);
     const selectElement = screen.getByTestId("select-testid");
     const selectDefault = screen.getByText("Toutes");
     expect(selectElement).toBeInTheDocument();
