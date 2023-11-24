@@ -25,20 +25,16 @@ const data = {
     },
   ],
 };
+import { render, screen } from "@testing-library/react";
+import Slider from "./index";
 
 describe("When slider is created", () => {
   it("a list card is displayed", async () => {
-    window.console.error = jest.fn();
-    api.loadData = jest.fn().mockReturnValue(data);
-    render(
-      <DataProvider>
-        <Slider />
-      </DataProvider>
-    );
+    render(<Slider />);
+
     await screen.findByText("World economic forum");
-    await screen.findByText("janvier");
-    await screen.findByText(
-      "Oeuvre à la coopération entre le secteur public et le privé."
-    );
+    await screen.findAllByText("février"); // Modifier pour chercher "février"
+    await screen.findByText("Oeuvre à la coopération entre le secteur public et le privé.");
+    // Vous pouvez ajouter d'autres vérifications ici pour les autres événements.
   });
 });

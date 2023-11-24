@@ -4,23 +4,20 @@ import { getMonth } from "../../helpers/Date";
 import "./style.scss";
 
 const Slider = () => {
-  // J'utilise le hook useState pour gérer l'index du slide actuellement affiché.
-  //  useState Signifie ajouter un état à un composant fonctionnel.
+  const { data } = useData();
   const [index, setIndex] = useState(0);
 
-  // J'accède aux données du slider via un contexte personnalisé.
-  const { data } = useData();
+  // Assurez-vous que les données sont disponibles avant de les utiliser.
+  const byDateDesc = data?.focus
+    ? data.focus.sort((evtA, evtB) => new Date(evtA.date) < new Date(evtB.date) ? -1 : 1)
+    : []; // Utilisez un tableau vide comme valeur par défaut.
 
-  // Je trie les données par date dans l'ordre décroissant.
-  const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
-  );
 
   // Cette fonction passe au prochain slide après un délai.
   const nextCard = () => {
     setTimeout(
       () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
-      5000
+      10000
     );
   };
 
@@ -31,8 +28,9 @@ const Slider = () => {
   // UseEffect est le hook qui gère les effets de bord dans les composants fonctionnels.
 
   return (
+    
     <div className="SlideCardList">
-      {byDateDesc?.map((event, idx) => (
+{byDateDesc && byDateDesc.map((event, idx) => (
         // Pour chaque événement, je crée un slide avec une clé unique basée sur l'id de l'événement.
         <div key={event.id} className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
           <img src={event.cover} alt={event.title} />
