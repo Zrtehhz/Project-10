@@ -25,8 +25,7 @@ const data = {
     },
   ],
 };
-import { render, screen } from "@testing-library/react";
-import Slider from "./index";
+
 
 describe("When slider is created", () => {
   it("a list card is displayed", async () => {
