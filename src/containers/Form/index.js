@@ -10,7 +10,7 @@ const Form = ({ onSuccess, onError }) => {
   const [sending, setSending] = useState(false);
   const sendContact = useCallback(
     async (evt) => {
-      evt.preventDefault();
+      evt.preventDefault(); 
       setSending(true);
       try {
         // Appeler l'api moclContactApi
