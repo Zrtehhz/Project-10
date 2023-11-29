@@ -1,3 +1,4 @@
 src/containers/Slider/index.js
-
 src/containers/Form/index.test.js
+src/componenets/field/index.js ( formulaire champ requis)
+src/container/events/index.js (filtrage categories/card)

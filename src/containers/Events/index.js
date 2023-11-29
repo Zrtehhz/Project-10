@@ -13,25 +13,23 @@ const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const filteredEvents = (
-    (!type
-      ? data?.events
-      : data?.events) || []
-  ).filter((event, index) => {
-    if (
-      (currentPage - 1) * PER_PAGE <= index &&
-      PER_PAGE * currentPage > index
-    ) {
-      return true;
-    }
-    return false;
-  });
+  /* modifie le filtrage des évenements, affichant ainsi les card en fonction de la catégories sélectionner. */
+  const filteredEvents = (data?.events || [])
+    .filter((event) => {
+      if (!type || event.type === type) {
+        return true;
+      }
+      return false;
+    })
+    .slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
   };
   const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
   const typeList = new Set(data?.events.map((event) => event.type));
+
   return (
     <>
       {error && <div>An error occured</div>}
