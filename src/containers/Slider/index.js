@@ -9,29 +9,24 @@ const Slider = () => {
 
   // Assurez-vous que les données sont disponibles avant de les utiliser.
   const byDateDesc = data?.focus
-    ? data.focus.sort((evtA, evtB) => new Date(evtA.date) < new Date(evtB.date) ? -1 : 1)
-    : []; // Utilisez un tableau vide comme valeur par défaut.
-
+    ? [...data.focus].sort((evtA, evtB) => new Date(evtA.date) - new Date(evtB.date)) // Utilise une copie de data.focus pour trier sans modifier l'original
+    : []; // Utilise un tableau vide comme valeur par défaut.
 
   // Cette fonction passe au prochain slide après un délai.
-  const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
-      10000
-    );
-  };
+  const nextCard = () => setTimeout(() => {
+    setIndex(prevIndex => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
+  }, 10000);
 
-  // J'utilise useEffect pour déclencher le changement de slide.
+  // Utilise useEffect pour déclencher le changement de slide.
   useEffect(() => {
-    nextCard();
-  }, [index]); // La dépendance 'index' assure que le useEffect est relancé à chaque changement d'index.
-  // UseEffect est le hook qui gère les effets de bord dans les composants fonctionnels.
+    const timeoutId = nextCard(); // La dépendance 'index' assure que le useEffect est relancé à chaque changement d'index.
+    // La fonction de nettoyage pour annuler le setTimeout.
+    return () => clearTimeout(timeoutId);
+  }, [index, byDateDesc.length]); // Ajoutez `byDateDesc.length` pour que useEffect réagisse si le nombre d'éléments change.
 
   return (
-    
     <div className="SlideCardList">
-{byDateDesc && byDateDesc.map((event, idx) => (
-        // Pour chaque événement, je crée un slide avec une clé unique basée sur l'id de l'événement.
+      {byDateDesc && byDateDesc.map((event, idx) => (
         <div key={event.id} className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
           <img src={event.cover} alt={event.title} />
           <div className="SlideCard__descriptionContainer">
@@ -45,17 +40,18 @@ const Slider = () => {
       ))}
       <div className="SlideCard__paginationContainer">
         <div className="SlideCard__pagination">
-          {byDateDesc.map((event, radioIdx) => (
-            // Je crée un bouton radio pour chaque slide. La clé est unique grâce à l'id de l'événement.
-            <input
-              key={`radio-${event.id}`}
-              type="radio"
-              name="radio-button"
-              checked={index === radioIdx}
-              onChange={() => setIndex(radioIdx)} // Le changement du bouton radio modifie l'index du slide affiché.
-              readOnly
-            />
-          ))}
+        {
+  byDateDesc.map((event) => (
+    <input
+      key={`radio-${event.id}`}
+      type="radio"
+      name="radio-button"
+      checked={index === byDateDesc.indexOf(event)}
+      onChange={() => setIndex(byDateDesc.indexOf(event))} // Le changement du bouton radio modifie l'index du slide affiché.
+      readOnly
+    />
+  ))
+}
         </div>
       </div>
     </div>
