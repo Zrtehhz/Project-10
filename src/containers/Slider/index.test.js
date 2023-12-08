@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Slider from "./index";
+import { api, DataProvider } from "../../contexts/DataContext";
 
 const data = {
   focus: [
@@ -25,14 +26,19 @@ const data = {
   ],
 };
 
-
 describe("When slider is created", () => {
   it("a list card is displayed", async () => {
-    render(<Slider />);
-
+    window.console.error = jest.fn();
+    api.loadData = jest.fn().mockReturnValue(data);
+    render(
+      <DataProvider>
+        <Slider />
+      </DataProvider>
+    );
     await screen.findByText("World economic forum");
-    await screen.findAllByText("février"); // Modifier pour chercher "février"
-    await screen.findByText("Oeuvre à la coopération entre le secteur public et le privé.");
-    // Vous pouvez ajouter d'autres vérifications ici pour les autres événements.
+    await screen.findByText("janvier");
+    await screen.findByText(
+      "Oeuvre à la coopération entre le secteur public et le privé."
+    );
   });
 });
