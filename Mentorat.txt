@@ -1,4 +1,5 @@
-src/containers/Slider/index.js
-src/containers/Form/index.test.js
-src/componenets/field/index.js ( formulaire champ requis)
+src/components/field/index.js ( formulaire champ requis)
 src/container/events/index.js (filtrage categories/card)
+src/contexts/DataContext/index.js ( lastEventNeed est le dernier event enfant via la propriété value )
+src/pages/Home/index.js (lastEventNeed est ajouté au Home afin qu'il puisse fonctionner correctement)
+src/containers/slider/index.js (Ajout de fragment ( fonction react regroupant plusieurs enfants sans ajout de noeuds supplémentaires))

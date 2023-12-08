@@ -13,7 +13,7 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const {last} = useData()
+  const { lastEventNeed } = useData();
   return <>
     <header>
       <Menu />
@@ -116,13 +116,25 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label="boom"
-        />
+        {
+  // Vérifie si lastEventNeed et ses propriétés nécessaires (cover et title) existent.
+  lastEventNeed && lastEventNeed.cover && lastEventNeed.title ? (
+    // Si la condition est vraie (lastEventNeed, cover et title sont présents),
+    // le composant EventCard est rendu.
+    <EventCard
+      imageSrc={lastEventNeed.cover} // Utilise cover de lastEventNeed comme source de l'image.
+      title={lastEventNeed.title} // Utilise title de lastEventNeed comme titre.
+      date={new Date(lastEventNeed.date)} // Convertit la date de lastEventNeed en objet Date.
+      small // Passe la prop small pour un style spécifique.
+      label="boom" // Passe une étiquette statique "boom".
+    />
+  ) : (
+    // Si la condition est fausse (lastEventNeed, cover ou title est absent),
+    // rien n'est rendu (retourne null).
+    null
+  )
+}
+
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
