@@ -59,6 +59,14 @@ const EventList = () => {
           </div>
           <div className="Pagination">
             {[...Array(pageNumber || 0)].map((_, n) => (
+  // Création d'un tableau basé sur le nombre de pages (pageNumber) et génération d'éléments pour chaque page
+  // À l'intérieur de cette expression map :
+  // - '_' est un placeholder pour l'élément du tableau. Il n'est pas utilisé ici.
+  // - 'n' est l'index de l'élément actuel dans le tableau, commençant à 0 et augmentant de 1 pour chaque élément.
+  
+  // Ici, vous pouvez retourner un composant ou un élément pour chaque 'n'.
+  // Par exemple, si vous générez des boutons de pagination, vous pourriez retourner un bouton pour chaque numéro de page.
+  // <Button key={n}>{n+1}</Button>  // Ceci est un exemple hypothétique.
               // eslint-disable-next-line react/no-array-index-key
               <a key={n} href="#events" onClick={() => setCurrentPage(n + 1)}>
                 {n + 1}
