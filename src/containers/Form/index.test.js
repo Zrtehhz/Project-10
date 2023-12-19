@@ -12,22 +12,18 @@ describe("When Events is created", () => {
 
   describe("and a click is triggered on the submit button", () => {
     it("the success action is called", async () => {
-      const mockSuccessAction = jest.fn(); // simuler une fonction d'action de réussite
-
-      const { findByText } = render(<Form onSuccess={mockSuccessAction} />);
-      fireEvent.click(screen.getByTestId('button-test-id'));
-      
-      // Attendre que le bouton affiche "En cours"
-      await findByText("En cours");
-      
-      // Ajouter un délai pour simuler l'action asynchrone
-      await new Promise(resolve => setTimeout(resolve, 1000));
-  
-      // Attendre que le texte du bouton revienne à "Envoyer" après la fin de l'action asynchrone
-      await findByText("Envoyer");
-      
-// S'assurer que la fonction d'action de réussite a été appelée
-      expect(mockSuccessAction).toHaveBeenCalled();
+      const onSuccess = jest.fn();
+      render(<Form onSuccess={onSuccess} />);
+      fireEvent(
+        await screen.findByTestId("button-test-id"),
+        new MouseEvent("click", {
+          cancelable: true,
+          bubbles: true,
+        })
+      );
+      await screen.findByText("En cours");
+      await screen.findByText("Envoyer");
+      expect(onSuccess).toHaveBeenCalled();
     });
   });
 });
