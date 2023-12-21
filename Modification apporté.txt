@@ -5,6 +5,5 @@ src/pages/Home/index.js (lastEventNeed est ajouté au Home afin qu'il puisse fon
 src/containers/slider/index.js (Ajout de fragment ( fonction react regroupant plusieurs enfants sans ajout de noeuds supplémentaires))
 src/components/select/index.js
 
-si besoin lien github pour vérifier
 
 
